@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PageProduitController!{% endblock %}
+
+{% block body %}
+    <style>
+        .card:hover {
+            box-shadow: 1px 2px 5px;
+        }
+    </style>
+
+    <div class="container">
+        {% for produit in produits %}
+            {% if loop.index0 is divisible by(4) %}
+                <div class="row">
+            {% endif %}
+
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a href="/produit/{{ produit.id }}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="carouselProduit{{ produit.id }}" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% for url in produit.image %}
+                                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                            <img class="d-block w-100" src="{{ url }}" alt="Image du produit">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselProduit{{ produit.id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselProduit{{ produit.id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+
+                            <h5 class="card-title">{{ produit.nom }}</h5>
+                            <p class="card-text">{{ produit.prix }}€</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            {% if loop.index is divisible by(4) or loop.last %}
+                </div> {# Ferme la ligne après 4 produits ou si c'est le dernier produit #}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

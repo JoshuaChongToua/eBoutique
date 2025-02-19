@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+    <style>
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+
+        }
+
+        .row{
+            display: flex;
+            width: 100%;
+        }
+
+        .left{
+            background-color: white;
+            padding: 15px;
+        }
+
+        .right{
+            background-color: #3b82f6;
+            padding: 15px;
+        }
+
+        .btn-panier {
+            display: flex;
+            width: 100%;
+            border-radius: 7px;
+            border: none;
+            justify-content: center;
+            padding: 8px;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: center;
+        }
+
+        .prix {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantite{
+            width: 20%;
+        }
+    </style>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-4 col-sm-6 mb-4 left">
+                <div id="carouselProduit{{ produit.id }}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for url in produit.image %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <img class="d-block mx-auto img-fluid" src="{{ url }}" alt="Image du produit">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselProduit{{ produit.id }}" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselProduit{{ produit.id }}" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-1 col-sm-3 mb-4 right">
+                <h4>{{ produit.nom }}</h4>
+                <div class="prix">
+                    <h4>{{ produit.prix }}€</h4>
+                    <span>livraison gratuite</span>
+                </div>
+                <p>{{ produit.description }}</p>
+                <form action="/produit/{{ produit.id }}/add-to-cart" method="GET">
+                    <label>Personne(s) :
+                        <input class="quantite" type="number" name="quantity" min="1" value="1">
+                    </label>
+                    <button type="submit" class="btn-panier">Ajouter au panier</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <a href="{{ path('app_produit_index') }}">back to list</a>
+
+
+
+{% endblock %}

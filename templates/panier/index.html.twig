@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <table class="panier">
+                <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in panier %}
+                    {% set produit = item.produit %}
+                    <tr data-id="{{ produit.id }}">
+                        <td>
+                            <img src="{{ produit.image[0] }}" alt="{{ produit.nom }}" width="350">
+                        </td>
+                        <td>{{ produit.nom }}</td>
+                        <td class="prix">{{ produit.prix }}€</td>
+                        <td>
+                            <input type="number" class="quantite" value="{{ item.quantity }}" min="1">
+                        </td>
+                        <td class="total">{{ produit.prix * item.quantity }}€</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <h5>Total : <span class="total-panier">{{ total }}</span>€</h5>
+
+            <a href="{{ path('app_commande_new') }}"><button>Valider la Commande</button></a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.quantite').forEach(input => {
+                input.addEventListener('change', function () {
+                    let row = this.closest('tr');
+                    let productId = row.dataset.id;
+                    let newQuantity = this.value;
+
+                    fetch('/panier/update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: `id=${productId}&quantity=${newQuantity}`
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                row.querySelector('.total').textContent = data.newTotal + '€';
+                                document.querySelector('.total-panier').textContent = data.newAllTotal;
+                            } else {
+                                alert(data.error);
+                            }
+                        })
+                        .catch(error => console.error('Erreur:', error));
+                });
+            });
+        });
+    </script>
+{% endblock %}

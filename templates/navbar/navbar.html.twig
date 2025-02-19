@@ -1,0 +1,61 @@
+<style>
+    .navbar-bar {
+        display: flex;
+        background-color: white;
+        padding: 15px;
+    }
+
+    .logo {
+        display: flex;
+        width: 20%;
+    }
+
+    .categorie {
+        display: flex;
+        width: 60%;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .profile {
+        display: flex;
+        width: 20%;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+</style>
+
+
+<nav class="navbar-bar">
+    <div class="logo">
+        <a href="{{ path('app_home') }}">
+            <img src="{{ asset('images/logo.jpg') }}" alt="logo" width="150">
+        </a>
+    </div>
+
+    <div class="categorie">
+        <div>
+            <a class="nav-link" href="{{ path('app_get_all_produit') }}">Monde</a>
+        </div>
+        <div>
+            <a class="nav-link" href="{{ path('app_get_europe_produit') }}">Europe</a>
+        </div>
+        <div>
+            <a class="nav-link" href="{{ path('app_get_asie_produit') }}">Asie</a>
+        </div>
+
+    </div>
+
+
+    <div class="profile">
+        {% if app.user %}
+            <a href="{{ path('app_logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ path('app_login') }}">Login</a>
+        {% endif %}
+        <div>
+            <a class="nav-link" href="{{ path('app_panier') }}">Panier</a>
+        </div>
+    </div>
+</nav>
