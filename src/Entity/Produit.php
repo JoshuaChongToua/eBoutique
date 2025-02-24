@@ -31,6 +31,12 @@ class Produit
     #[ORM\Column]
     private array $image = [];
 
+    #[ORM\Column(length: 255)]
+    private ?string $pays = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +110,30 @@ class Produit
     public function setImage(array $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(string $pays): static
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

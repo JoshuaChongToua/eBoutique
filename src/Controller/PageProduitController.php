@@ -19,26 +19,18 @@ final class PageProduitController extends AbstractController
     }
 
     #[Route('/page-produit', name: 'app_get_all_produit', methods: ['GET'])]
-    public function getAllProduit(ProduitRepository $produitRepository): Response
+    public function getAllProduit(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
     {
         return $this->render('page_produit/index.html.twig', [
             'produits' => $produitRepository->findAll(),
+            'categories' => $categorieRepository->findAll(),
         ]);
     }
 
-    #[Route('/page-produit/europe', name: 'app_get_europe_produit', methods: ['GET'])]
-    public function getEuropeProduit(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
+    #[Route('/page-produit/{continent}', name: 'app_get_europe_produit', methods: ['GET'])]
+    public function getContinentProduit($continent, ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
     {
-        $categorie = $categorieRepository->findBy(['nom' => 'europe']);
-        return $this->render('page_produit/index.html.twig', [
-            'produits' => $produitRepository->findby(['categorie' => $categorie]),
-        ]);
-    }
-
-    #[Route('/page-produit/asie', name: 'app_get_asie_produit', methods: ['GET'])]
-    public function getAsieProduit(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
-    {
-        $categorie = $categorieRepository->findBy(['nom' => 'asie']);
+        $categorie = $categorieRepository->findBy(['nom' => $continent]);
         return $this->render('page_produit/index.html.twig', [
             'produits' => $produitRepository->findby(['categorie' => $categorie]),
         ]);

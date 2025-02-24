@@ -53,6 +53,8 @@ final class ProduitController extends AbstractController
                     'query' => [
                         'query' => $produit->getReference(),
                         'per_page' => 5,
+                        'orientation' => 'landscape',
+                        'page' => random_int(1, 3),
                     ],
                 ]
             );
@@ -61,6 +63,9 @@ final class ProduitController extends AbstractController
             $imageUrls = array_map(fn($photo) => $photo['src']['large'], $data['photos']);
 
             $produit->setImage($imageUrls);
+            $produit->setNom(ucfirst($form->get('nom')->getData()));
+            $produit->setReference(ucfirst($form->get('reference')->getData()));
+            $produit->setPays(ucfirst($form->get('pays')->getData()));
 
 
             $entityManager->persist($produit);
