@@ -45,38 +45,40 @@
     </div>
 
     <div class="categorie">
-        <div>
-            <a class="continent" href="{{ path('app_get_all_produit') }}">Monde</a>
-        </div>
-        <div>
-            <a class="continent" href="/page-produit/europe">Europe</a>
-        </div>
-        <div>
-            <a class="continent" href="/page-produit/Asie">Asie</a>
-        </div>
-        <div>
-            <a class="continent" href="/page-produit/Amerique-du-nord">Amérique du Nord</a>
-        </div>
-        <div>
-            <a class="continent" href="/page-produit/Oceanie">Océanie</a>
-        </div>
-
+        <div><a class="continent" href="{{ path('app_get_all_produit') }}" data-turbo-action="replace">Monde</a></div>
+        <div><a class="continent" href="/page-produit/europe" data-turbo-action="replace">Europe</a></div>
+        <div><a class="continent" href="/page-produit/Asie" data-turbo-action="replace">Asie</a></div>
+        <div><a class="continent" href="/page-produit/Amerique-du-nord" data-turbo-action="replace">Amérique du Nord</a></div>
+        <div><a class="continent" href="/page-produit/Oceanie" data-turbo-action="replace">Océanie</a></div>
     </div>
+
 
 
     <div class="profile">
         {% if app.user %}
+            {% set showAdmin = false %}
+            {% for role in roles %}
+                {% if role != "ROLE_USER" %}
+                    {% set showAdmin = true %}
+                {% endif %}
+            {% endfor %}
+
+            {% if showAdmin %}
+                <a href="/admin">Admin</a>
+            {% endif %}
+
+
             <div>
-                <a href="/user/{{ app.user.id }}">
+                <a href="/user/{{ app.user.id }}" data-turbo-action="replace">
                     <img src="{{ asset('/images/user.png') }}" alt="account" width="30" height="30">
                 </a>
             </div>
-            <a href="{{ path('app_logout') }}">Logout</a>
+            <a href="{{ path('app_logout') }}" data-turbo-action="replace">Logout</a>
         {% else %}
-            <a href="{{ path('app_login') }}">Login</a>
+            <a href="{{ path('app_login') }}" data-turbo-action="replace">Login</a>
         {% endif %}
         <div>
-            <a class="nav-link" href="{{ path('app_panier') }}">Panier</a>
+            <a class="nav-link" href="{{ path('app_panier') }}" data-turbo-action="replace">Panier</a>
         </div>
     </div>
 </nav>

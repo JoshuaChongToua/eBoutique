@@ -15,7 +15,7 @@ final class HomeController extends AbstractController
     {
         $produits = $produitRepository->findAll();
         $categories = $categorieRepository->findAll();
-        $plages = $produitRepository->findBy(['type' => 'plage']);
+        $plages = $produitRepository->findByType('plage');
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'produits' => $produits,

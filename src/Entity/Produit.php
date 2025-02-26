@@ -34,8 +34,8 @@ class Produit
     #[ORM\Column(length: 255)]
     private ?string $pays = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    #[ORM\Column]
+    private array $type = [];
 
     public function getId(): ?int
     {
@@ -126,12 +126,12 @@ class Produit
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?array
     {
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(array $type): static
     {
         $this->type = $type;
 

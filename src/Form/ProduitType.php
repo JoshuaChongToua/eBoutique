@@ -32,7 +32,7 @@ class ProduitType extends AbstractType
                 ],
                 'label' => 'Choisir un type',
                 'expanded' => true,
-                'multiple' => false,
+                'multiple' => true,
             ])
         ;
     }

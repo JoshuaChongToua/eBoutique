@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("turbo:load", function () {
 
     document.querySelectorAll(".back-content").forEach(function (element) {
         let imagesData = element.getAttribute("data-images");
