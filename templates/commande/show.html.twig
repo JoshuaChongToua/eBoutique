@@ -7,26 +7,22 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ commande.id }}</td>
-            </tr>
-            <tr>
-                <th>Numero</th>
-                <td>{{ commande.numero }}</td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td>{{ commande.adresse }}</td>
-            </tr>
-            <tr>
-                <th>Produit</th>
-                <td>{{ commande.produit ? commande.produit|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Prix</th>
-                <td>{{ commande.prix }}</td>
-            </tr>
+        <tr>
+            <th>Numero</th>
+            <td>{{ commande.numero }}</td>
+        </tr>
+        <tr>
+            <th>Adresse</th>
+            <td>{{ commande.adresse }}</td>
+        </tr>
+        <tr>
+            <th>Produit</th>
+            <td>{{ commande.produit ? commande.produit|json_encode : '' }}</td>
+        </tr>
+        <tr>
+            <th>Prix</th>
+            <td>{{ commande.prix }}</td>
+        </tr>
         </tbody>
     </table>
 

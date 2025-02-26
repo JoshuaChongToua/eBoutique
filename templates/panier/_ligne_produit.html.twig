@@ -1,0 +1,28 @@
+<turbo-stream action="replace" target="produit_{{ produit.id }}">
+    <template>
+        <tr id="produit_{{ produit.id }}">
+            <td>
+                <img src="{{ produit.image[0] }}" alt="{{ produit.nom }}" width="300">
+            </td>
+            <td>{{ produit.nom }}</td>
+            <td class="prix">{{ produit.prix }}€</td>
+            <td>
+                <form method="post" action="{{ path('app_panier_update', {'id': produit.id}) }}" data-turbo-frame="produit_{{ produit.id }}">
+                    <input type="number" name="quantity" value="{{ quantity }}" min="1" max="100" onchange="this.form.requestSubmit()">
+                </form>
+            </td>
+            <td class="total">{{ total }}€</td>
+            <td>
+                <form method="post" action="{{ path('app_panier_remove', {'id': produit.id}) }}" data-turbo-frame="produit_{{ produit.id }}">
+                    <button type="submit">Retirer</button>
+                </form>
+            </td>
+        </tr>
+    </template>
+</turbo-stream>
+
+<turbo-stream action="replace" target="panier-total">
+    <template>
+        <span id="panier-total">{{ totalPanier }}</span>
+    </template>
+</turbo-stream>

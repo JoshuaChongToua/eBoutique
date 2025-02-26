@@ -37,40 +37,74 @@ final class PanierController extends AbstractController
         ]);
     }
 
-    #[Route('/panier/update', name: 'app_panier_update', methods: ['POST'])]
-    public function updateQuantity(Request $request, RequestStack $requestStack, ProduitRepository $produitRepository): JsonResponse
+    #[Route('/panier/update/{id}', name: 'app_panier_update', methods: ['POST'])]
+    public function updateQuantity(int $id, Request $request, RequestStack $requestStack, ProduitRepository $produitRepository): Response
     {
         $session = $requestStack->getSession();
         $panier = $session->get('panier', []);
 
-        $id = $request->request->getInt('id');
-        $newQuantity = $request->request->getInt('quantity');
-
-        if ($newQuantity < 1) {
-            return new JsonResponse(['error' => 'Quantité invalide'], 400);
-        }
-
         if (!isset($panier[$id])) {
-            return new JsonResponse(['error' => 'Produit non trouvé'], 404);
+            throw $this->createNotFoundException('Produit non trouvé dans le panier.');
         }
 
-        $panier[$id] = $newQuantity;
+        // Met à jour la quantité
+        $quantity = $request->request->get('quantity');
+        if ($quantity > 0) {
+            $panier[$id] = $quantity;
+        }
+
+        // Met à jour le panier dans la session
         $session->set('panier', $panier);
 
-        $total = 0;
-        foreach ($panier as $produitId => $quantity) {
-            $produit = $produitRepository->find($produitId);
-            if ($produit) {
-                $total += $produit->getPrix() * $quantity;
-            }
+        $produit = $produitRepository->find($id);
+        $nouveauTotalProduit = $produit->getPrix() * $quantity;
+
+        // Recalculer le total du panier
+        $totalPanier = 0;
+        foreach ($panier as $productId => $quantite) {
+            $product = $produitRepository->find($productId);
+            $totalPanier += $product->getPrix() * $quantite;
         }
 
+        $response = new Response($this->renderView('panier/_ligne_produit.html.twig', [
+            'produit' => $produit,
+            'quantity' => $quantity,
+            'total' => $nouveauTotalProduit,
+            'totalPanier' => $totalPanier,
+        ]));
 
-        return new JsonResponse([
-            'success' => true,
-            'newTotal' => $produitRepository->find($id)->getPrix() * $newQuantity,
-            'newAllTotal' => $total
-        ]);
+        $response->headers->set('Content-Type', 'text/vnd.turbo-stream.html');
+
+        return $response;
     }
+
+    #[Route('/panier/remove/{id}', name: 'app_panier_remove', methods: ['POST'])]
+    public function removeProduct(int $id, RequestStack $requestStack, ProduitRepository $produitRepository): Response
+    {
+        $session = $requestStack->getSession();
+        $panier = $session->get('panier', []);
+
+        if (!isset($panier[$id])) {
+            throw $this->createNotFoundException('Produit non trouvé dans le panier.');
+        }
+
+        // Retirer le produit du panier
+        unset($panier[$id]);
+        $session->set('panier', $panier);
+
+        // Recalculer le total du panier
+        $totalPanier = array_reduce(array_keys($panier), function ($total, $productId) use ($produitRepository, $panier) {
+            $product = $produitRepository->find($productId);
+            return $total + ($product ? $product->getPrix() * $panier[$productId] : 0);
+        }, 0);
+
+        // Retourne un Turbo Stream pour supprimer la ligne et mettre à jour le total
+        return $this->render('panier/_panier_total.html.twig', [
+            'id' => $id,
+            'totalPanier' => $totalPanier,
+        ], new Response('', Response::HTTP_OK, ['Content-Type' => 'text/vnd.turbo-stream.html']));
+    }
+
+
 
 }
