@@ -45,6 +45,6 @@ document.addEventListener("turbo:load", function () {
             });
         }
 
-        setInterval(changeBackground, 6000);
+        setInterval(changeBackground, 3000);
     });
 });

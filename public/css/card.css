@@ -1,11 +1,11 @@
-.card {
+.prod-card {
     overflow: visible;
     width: 190px;
     height: 254px;
     background-color: transparent;
 }
 
-.content {
+.prod-content {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
@@ -14,7 +14,7 @@
     border-radius: 5px;
 }
 
-.front, .back {
+.prod-front, .prod-back {
     background-color: #151515;
     position: absolute;
     width: 100%;
@@ -25,7 +25,7 @@
     overflow: hidden;
 }
 
-.back {
+.prod-back {
     width: 100%;
     height: 100%;
     justify-content: center;
@@ -34,7 +34,7 @@
     overflow: hidden;
 }
 
-.back::before {
+.prod-back::before {
     position: absolute;
     content: ' ';
     display: block;
@@ -44,7 +44,7 @@
     animation: rotation_481 5000ms infinite linear;
 }
 
-.back-content {
+.prod-back-content {
     position: absolute;
     width: 98%;
     height: 98%;
@@ -57,24 +57,22 @@
     padding-bottom: 30px;
     align-items: center;
     gap: 30px;
-    background-size: cover ;
-    background-position: center ;
-    background-repeat: no-repeat ;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow: hidden;
 }
 
-
-.ville-name {
+.prod-ville-name {
     position: relative;
-    z-index: 2; /* Toujours au-dessus */
+    z-index: 2;
     color: white;
     font-size: 24px;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
     text-decoration: none;
 }
 
-
-.image-layer {
+.prod-image-layer {
     position: absolute;
     top: 0;
     left: 0;
@@ -87,7 +85,7 @@
     opacity: 0;
 }
 
-.card:hover .content {
+.prod-card:hover .prod-content {
     transform: rotateY(180deg);
 }
 
@@ -95,18 +93,17 @@
     0% {
         transform: rotateZ(0deg);
     }
-
-    0% {
+    100% {
         transform: rotateZ(360deg);
     }
 }
 
-.front {
+.prod-front {
     transform: rotateY(180deg);
     color: white;
 }
 
-.front .front-content {
+.prod-front .prod-front-content {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -116,7 +113,7 @@
     justify-content: center;
 }
 
-.front-content .badge {
+.prod-front-content .prod-badge {
     background-color: #00000055;
     padding: 2px 10px;
     border-radius: 10px;
@@ -124,7 +121,7 @@
     width: fit-content;
 }
 
-.description {
+.prod-description {
     box-shadow: 0px 0px 10px 5px #00000088;
     width: 100%;
     padding: 10px;
@@ -133,29 +130,29 @@
     border-radius: 5px;
 }
 
-.title {
+.prod-title {
     font-size: 12px;
     max-width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.title p {
+.prod-title p {
     width: 100%;
 }
 
-.produit-description {
+.prod-produit-description {
     font-size: 11px;
     max-width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.produit-description p {
+.prod-produit-description p {
     width: 100%;
 }
 
-.produit-description-souligne  {
+.prod-produit-description-souligne {
     font-size: 11px;
     max-width: 100%;
     display: flex;
@@ -164,15 +161,16 @@
     text-decoration: underline;
 }
 
-.produit-description-souligne a {
+.prod-produit-description-souligne a {
     color: white;
 }
-.produit-description-souligne a:hover {
+
+.prod-produit-description-souligne a:hover {
     color: #00d4a8;
     text-shadow: 0 0 10px #00d4a8, 0 0 20px #00d4a8;
 }
 
-.card-footer {
+.prod-card-footer {
     color: #ffffff88;
     margin-top: 5px;
     font-size: 8px;
@@ -180,7 +178,7 @@
     justify-content: center;
 }
 
-.front .img {
+.prod-front .prod-img {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -188,17 +186,13 @@
     object-position: center;
 }
 
-
-
 @keyframes floating {
     0% {
         transform: translateY(0px);
     }
-
     50% {
         transform: translateY(10px);
     }
-
     100% {
         transform: translateY(0px);
     }

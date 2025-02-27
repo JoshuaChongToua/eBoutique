@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class ProduitCrudController extends AbstractCrudController
 {
     private $httpClient;
+    private $apikeyUnsplash= "TXWJMwr83pP7CgyTZ7DaHC7smEdLx9TPq5NrEgh9aVw";
     private $apiKey = 'bWTszRPOGn41rxtfnu3RCdfX4Zf1WHm6CM5Rm2mlDhJVgz62pH1h5dmX';
 
     public function __construct(HttpClientInterface $httpClient, RequestStack $session)
@@ -58,25 +59,59 @@ class ProduitCrudController extends AbstractCrudController
         ];
     }
 
+//    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+//    {
+//        if (!$entityInstance instanceof Produit) return;
+//
+//        $response = $this->httpClient->request('GET', 'https://api.pexels.com/v1/search', [
+//            'headers' => [
+//                'Authorization' => $this->apiKey,
+//            ],
+//            'query' => [
+//                'query' => $entityInstance->getReference(),
+//                'per_page' => 5,
+//                'orientation' => 'landscape',
+//                'page' => random_int(1, 3),
+//            ],
+//        ]);
+//
+//        $data = $response->toArray();
+//        $imageUrls = array_map(fn($photo) => $photo['src']['original'], $data['photos']);
+//
+//        $entityInstance->setImage($imageUrls);
+//        $entityInstance->setNom(ucfirst($entityInstance->getNom()));
+//        $entityInstance->setReference(ucfirst($entityInstance->getReference()) . "panoramic view ");
+//        $entityInstance->setPays(ucfirst($entityInstance->getPays()));
+//
+//        parent::persistEntity($entityManager, $entityInstance);
+//    }
+
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if (!$entityInstance instanceof Produit) return;
 
-        $response = $this->httpClient->request('GET', 'https://api.pexels.com/v1/search', [
-            'headers' => [
-                'Authorization' => $this->apiKey,
-            ],
+        // Requête à l'API d'Unsplash
+        $response = $this->httpClient->request('GET', 'https://api.unsplash.com/search/photos', [
             'query' => [
                 'query' => $entityInstance->getReference(),
-                'per_page' => 5,
-                'orientation' => 'landscape',
-                'page' => random_int(1, 3),
+                'per_page' => 30, // Nombre d'images par page
+                'orientation' => 'landscape', // Orientation de l'image
+                'page' => 1, // Page aléatoire entre 1 et 3
+                'client_id' => $this->apikeyUnsplash, // Remplacez par votre clé API
             ],
         ]);
 
         $data = $response->toArray();
-        $imageUrls = array_map(fn($photo) => $photo['src']['large'], $data['photos']);
 
+        // Vérifier le nombre d'images trouvées
+        if (isset($data['total']) && $data['total'] > 0) {
+            // Récupérer les URLs des images en haute qualité
+            $imageUrls = array_map(fn($photo) => $photo['urls']['regular'], $data['results']);
+        } else {
+            $imageUrls = []; // Pas d'images trouvées
+        }
+
+        // Assigner les images à l'instance
         $entityInstance->setImage($imageUrls);
         $entityInstance->setNom(ucfirst($entityInstance->getNom()));
         $entityInstance->setReference(ucfirst($entityInstance->getReference()));
@@ -84,4 +119,8 @@ class ProduitCrudController extends AbstractCrudController
 
         parent::persistEntity($entityManager, $entityInstance);
     }
+
+
+
+
 }
