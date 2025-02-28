@@ -21,6 +21,7 @@
         width: 20%;
         align-items: center;
         justify-content: flex-end;
+        gap: 15px;
     }
 
     .continent {
@@ -34,21 +35,34 @@
 
     }
 
+    .a-admin {
+        text-decoration: none;
+        color: white;
+    }
+
+    .a-admin:hover {
+        color: #00d4a8;
+        text-shadow: 0 0 10px #00d4a8, 0 0 20px #00d4a8;
+    }
+
 </style>
 
 
 <nav class="navbar-bar">
     <div class="logo">
         <a href="{{ path('app_home') }}" data-turbo="false">
-            <img src="{{ asset('images/logo.jpg') }}" alt="logo" width="150">
+            <img src="{{ asset('images/logo.png') }}" alt="logo" width="110">
         </a>
     </div>
 
     <div class="categorie">
         <div><a class="continent" href="{{ path('app_get_all_produit') }}" data-turbo-action="replace">Monde</a></div>
-        {% for continent in continents %}
-            <div><a class="continent" href="{{ path('app_get_continent_produit' , {continent: continent.nom}) }}" data-turbo-action="replace">{{ continent.nom }}</a></div>
-        {% endfor %}
+        {% if continents %}
+            {% for continent in continents %}
+                <div><a class="continent" href="{{ path('app_get_continent_produit' , {continent: continent.nom}) }}"
+                        data-turbo-action="replace">{{ continent.nom }}</a></div>
+            {% endfor %}
+        {% endif %}
     </div>
 
 
@@ -62,7 +76,7 @@
             {% endfor %}
 
             {% if showAdmin %}
-                <a href="/admin">Admin</a>
+                <a class="a-admin" href="/admin">Admin</a>
             {% endif %}
 
 
@@ -71,12 +85,12 @@
                     <img src="{{ asset('/images/user.png') }}" alt="account" width="30" height="30">
                 </a>
             </div>
-            <a href="{{ path('app_logout') }}" data-turbo-action="replace">Logout</a>
+            <a class="a-admin" href="{{ path('app_logout') }}" data-turbo-action="replace">Logout</a>
         {% else %}
-            <a href="{{ path('app_login') }}" data-turbo-action="replace">Login</a>
+            <a class="a-admin" href="{{ path('app_login') }}" data-turbo-action="replace">Login</a>
         {% endif %}
         <div>
-            <a class="nav-link" href="{{ path('app_panier') }}" data-turbo-action="replace">Panier</a>
+            <a class="a-admin" href="{{ path('app_panier') }}" data-turbo-action="replace">Panier</a>
         </div>
     </div>
 </nav>

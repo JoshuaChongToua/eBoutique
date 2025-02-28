@@ -50,5 +50,31 @@ class ProduitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findRandomProducts(int $limit = 6)
+    {
+        // Récupérer tous les IDs des produits
+        $ids = $this->createQueryBuilder('p')
+            ->select('p.id')
+            ->getQuery()
+            ->getScalarResult();
+
+        // Extraire les IDs sous forme de tableau
+        $ids = array_column($ids, 'id');
+
+        // Mélanger les IDs et en prendre 6
+        shuffle($ids);
+        $randomIds = array_slice($ids, 0, $limit);
+
+        // Récupérer les produits correspondants
+        return $this->createQueryBuilder('p')
+            ->where('p.id IN (:ids)')
+            ->setParameter('ids', $randomIds)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
 
 }

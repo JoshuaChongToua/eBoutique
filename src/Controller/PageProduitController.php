@@ -21,9 +21,11 @@ final class PageProduitController extends AbstractController
     #[Route('/page-produit', name: 'app_get_all_produit', methods: ['GET'])]
     public function getAllProduit(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
     {
-        return $this->render('page_produit/index.html.twig', [
+        $tendances = $produitRepository->findRandomProducts(6);
+        return $this->render('page_produit/monde.html.twig', [
             'produits' => $produitRepository->findAll(),
             'categories' => $categorieRepository->findAll(),
+            'tendances' => $tendances,
         ]);
     }
 
@@ -33,12 +35,13 @@ final class PageProduitController extends AbstractController
         $categorie = $categorieRepository->findBy(['nom' => $continent]);
         $produits = $produitRepository->findByType($continent);
         if ($produits) {
-            return $this->render('page_produit/index.html.twig', [
+            return $this->render('page_produit/type.html.twig', [
                 'produits' => $produits
             ]);
         }
-        return $this->render('page_produit/index.html.twig', [
+        return $this->render('page_produit/type.html.twig', [
             'produits' => $produitRepository->findby(['categorie' => $categorie]),
+            'continent' => $categorie,
         ]);
     }
 

@@ -50,41 +50,22 @@ class ProduitCrudController extends AbstractCrudController
             ChoiceField::new('type', 'Type')
                 ->setChoices([
                     'Ville' => 'ville',
+                    'Pays' => 'pays',
+                ])
+                ->renderExpanded()
+                ->setRequired(true),
+            ChoiceField::new('environnement', 'Environnement')
+                ->setChoices([
+                    'Ville' => 'ville',
                     'Plage' => 'plage',
                     'Montagne' => 'montagne',
+                    'Nature' => 'nature',
                 ])
                 ->allowMultipleChoices()
                 ->renderExpanded()
                 ->setRequired(true),
         ];
     }
-
-//    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-//    {
-//        if (!$entityInstance instanceof Produit) return;
-//
-//        $response = $this->httpClient->request('GET', 'https://api.pexels.com/v1/search', [
-//            'headers' => [
-//                'Authorization' => $this->apiKey,
-//            ],
-//            'query' => [
-//                'query' => $entityInstance->getReference(),
-//                'per_page' => 5,
-//                'orientation' => 'landscape',
-//                'page' => random_int(1, 3),
-//            ],
-//        ]);
-//
-//        $data = $response->toArray();
-//        $imageUrls = array_map(fn($photo) => $photo['src']['original'], $data['photos']);
-//
-//        $entityInstance->setImage($imageUrls);
-//        $entityInstance->setNom(ucfirst($entityInstance->getNom()));
-//        $entityInstance->setReference(ucfirst($entityInstance->getReference()) . "panoramic view ");
-//        $entityInstance->setPays(ucfirst($entityInstance->getPays()));
-//
-//        parent::persistEntity($entityManager, $entityInstance);
-//    }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
@@ -94,7 +75,7 @@ class ProduitCrudController extends AbstractCrudController
         $response = $this->httpClient->request('GET', 'https://api.unsplash.com/search/photos', [
             'query' => [
                 'query' => $entityInstance->getReference(),
-                'per_page' => 30, // Nombre d'images par page
+                'per_page' => 10, // Nombre d'images par page
                 'orientation' => 'landscape', // Orientation de l'image
                 'page' => 1, // Page aléatoire entre 1 et 3
                 'client_id' => $this->apikeyUnsplash, // Remplacez par votre clé API

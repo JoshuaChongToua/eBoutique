@@ -35,7 +35,10 @@ class Produit
     private ?string $pays = null;
 
     #[ORM\Column]
-    private array $type = [];
+    private array $environnement = [];
+
+    #[ORM\Column(length: 255)]
+    private ?string $type = null;
 
     public function getId(): ?int
     {
@@ -126,12 +129,24 @@ class Produit
         return $this;
     }
 
-    public function getType(): ?array
+    public function getEnvironnement(): ?array
+    {
+        return $this->environnement;
+    }
+
+    public function setEnvironnement(array $environnement): static
+    {
+        $this->environnement = $environnement;
+
+        return $this;
+    }
+
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setType(array $type): static
+    public function setType(string $type): static
     {
         $this->type = $type;
 
