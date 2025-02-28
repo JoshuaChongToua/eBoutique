@@ -11,16 +11,45 @@
             padding: 0; /* Si vous voulez également enlever le padding */
         }
 
+        .valider {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .valider a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #00d4a8;
+        }
+
+        .total {
+            display: flex;
+            justify-content: center;
+        }
+
     </style>
     <div class="container">
         <div class="row">
             <table class="panier">
                 <thead>
                 <tr>
-                    <th>Image</th>
+                    <th>Produit</th>
                     <th>Nom</th>
-                    <th>Prix</th>
                     <th>Quantité</th>
+                    <th>Prix</th>
                     <th>Total</th>
                 </tr>
                 </thead>
@@ -29,26 +58,24 @@
                     {% set produit = item.produit %}
                     <tr id="produit_{{ produit.id }}" data-id="{{ produit.id }}">
                         <td>
-                            <a href="{{ path('app_produit_show', {id: produit.id}) }}"><img src="{{ produit.image[0] }}" alt="{{ produit.nom }}" width="300"></a>
+                            <a href="{{ path('app_produit_show', {id: produit.id}) }}"><img src="{{ produit.image[0] }}"
+                                                                                            alt="{{ produit.nom }}"
+                                                                                            width="300"></a>
                         </td>
                         <td>{{ produit.nom }}</td>
-                        <td class="prix">{{ produit.prix }}€</td>
                         <td>
                             <form method="post" action="{{ path('app_panier_update', {'id': produit.id}) }}"
                                   data-turbo-frame="produit_{{ produit.id }}" style="display: inline-block;">
-                                <select name="quantity" id="quantity" class="quantite" onchange="this.form.requestSubmit()">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                </select>
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="8"
+                                       onchange="this.form.requestSubmit()">
                             </form>
+                        </td>
+                        <td class="prix">{{ produit.prix }}€</td>
+                        <td class="total">{{ produit.prix * item.quantity }}€</td>
+                        <td>
                             <form method="post" action="{{ path('app_panier_remove', {'id': produit.id}) }}"
-                                  data-turbo-frame="produit_{{ produit.id }}" data-turbo-action="replace" style="display: inline-block;">
+                                  data-turbo-frame="produit_{{ produit.id }}" data-turbo-action="replace"
+                                  style="display: inline-block;">
                                 <button class="btn-submit" type="submit">
                                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30"
                                          viewBox="0 0 64 64"
@@ -58,22 +85,25 @@
                                 </button>
                             </form>
                         </td>
-                        <td class="total">{{ produit.prix * item.quantity }}€</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
 
-            <h5>Total : <span id="panier-total">{{ total }}</span>€</h5>
-            {% if panier %}
-                <a href="{{ path('app_commande_new') }}" data-turbo="false">
-                    <button>Valider la Commande</button>
-                </a>
-            {% else %}
-                <a>
-                    <button disabled>Valider la Commande</button>
-                </a>
-            {% endif %}
+            <div class="total">
+                <h5><strong>Total : <span id="panier-total">{{ total }}</span>€</strong></h5>
+            </div>
+            <div class="valider">
+                {% if panier %}
+                    <a href="{{ path('app_commande_new') }}" data-turbo="false">
+                        <button class="btn">Valider la Commande</button>
+                    </a>
+                {% else %}
+                    <a>
+                        <button class="btn" disabled>Valider la Commande</button>
+                    </a>
+                {% endif %}
+            </div>
         </div>
     </div>
 

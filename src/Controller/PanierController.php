@@ -102,6 +102,7 @@ final class PanierController extends AbstractController
         return $this->render('panier/_panier_total.html.twig', [
             'id' => $id,
             'totalPanier' => $totalPanier,
+            'panier' => $panier,
         ], new Response('', Response::HTTP_OK, ['Content-Type' => 'text/vnd.turbo-stream.html']));
     }
 
