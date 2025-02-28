@@ -44,7 +44,7 @@ class ProduitRepository extends ServiceEntityRepository
     public function findByType(string $type)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.type LIKE :type')
+            ->andWhere('p.environnement LIKE :type')
             ->setParameter('type', '%"'.$type.'"%')
             ->getQuery()
             ->getResult();
