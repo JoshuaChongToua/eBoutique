@@ -24,10 +24,13 @@ final class CommandeController extends AbstractController
 //        ]);
 //    }
 
+/*
+ * Créé une commande apres la validation de la commande
+ */
     #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, RequestStack $requestStack, CommandeRepository $commandeRepository, ProduitRepository $produitRepository): Response
     {
-        $check = $this->checkAdresse();
+        $check = $this->checkUser();
         if ($check instanceof Response) {
             return $check;
         }
@@ -78,7 +81,10 @@ final class CommandeController extends AbstractController
     }
 
 
-    public function checkAdresse(): ?Response
+    /*
+     * verifie que le user est bien connecté et possède une adresse
+     */
+    public function checkUser(): ?Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');

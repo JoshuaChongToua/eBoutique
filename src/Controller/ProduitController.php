@@ -120,6 +120,9 @@ final class ProduitController extends AbstractController
 //        return $this->redirectToRoute('app_produit_index', [], Response::HTTP_SEE_OTHER);
 //    }
 
+    /*
+     * Ajoute un produit au panier
+     */
     #[Route('/{id}/add-to-cart', name: 'app_produit_add_to_cart', methods: ['GET', 'POST'])]
     public function addToCart(int $id, Request $request, RequestStack $requestStack, ProduitRepository $produitRepository): Response
     {

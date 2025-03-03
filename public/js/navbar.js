@@ -1,7 +1,4 @@
-// https://dribbble.com/shots/11012652--Timed-Cards-Opening
-
 import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.esm.browser.min.js';
-// import 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css';
 import splitting from "https://cdn.skypack.dev/splitting@1.0.6";
 
 const heroEl = document.querySelector(".hero");

@@ -37,6 +37,9 @@ final class PanierController extends AbstractController
         ]);
     }
 
+    /*
+     * Met a jour la quantité du panier et le total
+     */
     #[Route('/panier/update/{id}', name: 'app_panier_update', methods: ['POST'])]
     public function updateQuantity(int $id, Request $request, RequestStack $requestStack, ProduitRepository $produitRepository): Response
     {
@@ -78,6 +81,9 @@ final class PanierController extends AbstractController
         return $response;
     }
 
+    /*
+     * supprime un élément du panier et met à jour le total
+     */
     #[Route('/panier/remove/{id}', name: 'app_panier_remove', methods: ['POST'])]
     public function removeProduct(int $id, RequestStack $requestStack, ProduitRepository $produitRepository): Response
     {
