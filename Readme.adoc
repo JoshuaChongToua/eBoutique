@@ -1,6 +1,8 @@
 = EBoutique
 
 == Fonctionnalités
+La base de données est hebergée avec alwaysdata.
+
 (Toutes les fonctionnalités ci-dessous sont fonctionnelles)
 
 - Login (Fonctionnel)
